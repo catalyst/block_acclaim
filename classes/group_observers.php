@@ -34,6 +34,11 @@ class group_observers {
         $course = block_acclaim_get_block_course($event->courseid);
         $expires_timestamp = "";
         
+        if (!$course) {
+            error_log("failed to issue badge: course $event->courseid does not exist in block_acclaim");
+            return;
+        }
+
         if($course->expiration){
             $expires_timestamp = $course->expiration;
         }

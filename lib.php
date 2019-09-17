@@ -66,7 +66,7 @@ function block_acclaim_get_badge_info($course_id,$field)
 function block_acclaim_get_block_course($course_id)
 {
     global $DB;
-    $course = $DB->get_record('block_acclaim', array('courseid' => $course_id), '*', MUST_EXIST);
+    $course = $DB->get_record('block_acclaim', array('courseid' => $course_id), '*', IGNORE_MISSING);
     return $course;
 }
 
