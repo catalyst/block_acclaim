@@ -43,7 +43,7 @@ $PAGE->set_url('/blocks/acclaim/view.php', array('id' => $courseid));
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading(get_string('acclaim', 'block_acclaim'));
 
-$settingsnode = $PAGE->settingsnav->add('acclaim');
+$settingsnode = $PAGE->settingsnav->add('Credly');
 $editurl = new moodle_url('/blocks/acclaim/view.php', array('id' => $id, 'courseid' => $courseid, 'blockid' => $blockid));
 $editnode = $settingsnode->add(get_string('select_badge', 'block_acclaim'), $editurl);
 $editnode->make_active();
@@ -55,6 +55,7 @@ $toform['courseid'] = $courseid;
 $block_acclaim_course = $DB->get_record('block_acclaim_courses', array('courseid' => $courseid));
 if ($block_acclaim_course) {
     $toform['badgeid'] = $block_acclaim_course->badgeid;
+    $toform['expiration'] = $block_acclaim_course->expiration;
 }
 
 $acclaim_form_data->set_data($toform);
