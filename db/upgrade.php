@@ -62,7 +62,16 @@ function xmldb_block_acclaim_upgrade($oldversion) {
         $table = new xmldb_table('block_acclaim_courses');
         $field = new xmldb_field('badgeurl', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, 'badgename');
         if (!$dbman->field_exists($table, $field)) {
+            // Add the field but allow null.
+            $field->setNotNull(false);
             $dbman->add_field($table, $field);
+
+            // Update all records to have a badge url, defaulting to the value set in lib.php:set_course_badge_template().
+            $DB->execute('UPDATE {block_acclaim_courses} SET badgeurl = ?', array("Badge URL Isn't Set"));
+
+            // Change the field to not nullable.
+            $field->setNotNull(true);
+            $dbman->change_field_notnull($table, $field);
         }
 
         // Acclaim savepoint reached.
