@@ -34,7 +34,7 @@ $blockid = required_param('blockid', PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
 
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
-    print_error('invalidcourse', 'block_acclaim', $courseid);
+    throw new \moodle_exception('invalidcourse', 'block_acclaim', $courseid);
 }
 
 require_login($course);
@@ -68,7 +68,7 @@ if ($acclaim_form_data->is_cancelled()) {
     $courseurl = new moodle_url('/course/view.php', array('id' => $courseid));
     // We need to add code to appropriately act on and store the submitted data
     if (!$acclaim->set_course_badge_template($fromform)) {
-        print_error('inserterror', 'block_acclaim');
+        throw new \moodle_exception('inserterror', 'block_acclaim');
     }
     redirect($courseurl);
 } else {
