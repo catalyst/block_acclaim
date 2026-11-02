@@ -24,6 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024040800; // YYYYMMDDHH (year, month, day, 24-hr time)
-$plugin->requires  = 2014050800; // Requires this Moodle version
+$plugin->version = 2026110201; // YYYYMMDDHH (year, month, day, 24-hr time)
+$plugin->requires  = 2026100500; // Requires Moodle 5.3.
 $plugin->component = 'block_acclaim'; // Full name of the plugin (used for diagnostics)

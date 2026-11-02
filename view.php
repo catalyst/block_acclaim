@@ -34,10 +34,11 @@ $blockid = required_param('blockid', PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
 
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
-    throw new \moodle_exception('invalidcourse', 'block_acclaim', $courseid);
+    throw new \moodle_exception('invalidcourse', 'block_acclaim', '', $courseid);
 }
 
 require_login($course);
+require_capability('block/acclaim:editbadge', context_block::instance($blockid));
 
 $PAGE->set_url('/blocks/acclaim/view.php', array('id' => $courseid));
 $PAGE->set_pagelayout('standard');

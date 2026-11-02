@@ -23,7 +23,7 @@
  * @copyright  2020 Credly, Inc. <http://youracclaim.com>
  * @license    https://opensource.org/licenses/MIT
  */
-require_once(__DIR__ . '/../../config.php');
+defined('MOODLE_INTERNAL') || die();
 
 class block_acclaim_lib {
     public static $config = null;
@@ -57,6 +57,7 @@ class block_acclaim_lib {
         $user = $DB->get_record('user', array('id' => $user_id), '*', MUST_EXIST);
 
         $pending_badge = new stdClass();
+        $pending_badge->userid = $user->id;
         $pending_badge->badgetemplateid = $course->badgeid;
         $pending_badge->firstname = $user->firstname;
         $pending_badge->lastname = $user->lastname;

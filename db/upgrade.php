@@ -103,5 +103,29 @@ function xmldb_block_acclaim_upgrade($oldversion) {
         upgrade_block_savepoint(true, 2024040800, 'acclaim');
     }
 
+    if ($oldversion < 2026110201) {
+        $table = new xmldb_table('block_acclaim_pending_badges');
+        $field = new xmldb_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'id');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $index = new xmldb_index('userid', XMLDB_INDEX_NOTUNIQUE, ['userid']);
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        // Link existing pending rows to their users so privacy requests can find them.
+        $rows = $DB->get_records('block_acclaim_pending_badges', ['userid' => 0]);
+        foreach ($rows as $row) {
+            $userid = $DB->get_field('user', 'id', ['email' => $row->recipientemail, 'deleted' => 0], IGNORE_MULTIPLE);
+            if ($userid) {
+                $DB->set_field('block_acclaim_pending_badges', 'userid', $userid, ['id' => $row->id]);
+            }
+        }
+
+        upgrade_block_savepoint(true, 2026110201, 'acclaim');
+    }
+
     return true;
 }

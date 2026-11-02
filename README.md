@@ -1,6 +1,9 @@
 # Credly’s Acclaim Moodle Block Plugin
 This is a Moodle Block Plugin used to issue Acclaim badges when a course is successfully completed.
 
+## Requirements
+Moodle 5.3 or later.
+
 ## Installation
 To install this block plugin:
 
@@ -46,13 +49,11 @@ https://docs.moodle.org/23/en/Course_completion_settings
 This plugin includes unit tests to verify functionality.
 
 * Set up your installation to support unit testing: https://docs.moodle.org/dev/Unit_test_API#Running_the_unit_tests_in_Moodle
-* Create env variable named token with value of a valid token on Acclaim.
-* vendor/phpunit/phpunit/phpunit blocks/acclaim/tests
+* The tests mock all calls to Acclaim, so no token is required.
+* vendor/bin/phpunit public/blocks/acclaim/tests/block_acclaim_lib_test.php
 
 ## To Do
-* The stage environent and org ID is hard coded in the unit tests.  This should be changed to something like a env variable.
 *  Allow a course to have a badge set to none (or delete).
-*  Create language file so this plugin can be used on platforms other then english.
 
 
 ## Changelog
