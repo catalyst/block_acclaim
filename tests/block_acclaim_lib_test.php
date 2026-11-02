@@ -17,18 +17,15 @@
  * Credly: http://youracclaim.com
  * Moodle: http://moodle.org/
  *
- * PHPUnit data generator tests. Do not change the capitalization of this file name. phpunit expects files
- * of the form "*Test.php"
+ * PHPUnit tests for block_acclaim_lib.
  *
  * @package    block_acclaim
  * @copyright  2020 Credly, Inc. <http://youracclaim.com>
  * @license    https://opensource.org/licenses/MIT
  */
-GLOBAL $CFG;
-
 defined('MOODLE_INTERNAL') || die();
 
-require_once(dirname(__FILE__) . '/../../../config.php');
+global $CFG;
 require_once($CFG->dirroot . '/blocks/acclaim/lib.php');
 
 class block_acclaim_lib_test extends advanced_testcase {
@@ -325,7 +322,7 @@ class block_acclaim_lib_test extends advanced_testcase {
         }
 
         $mock_curl = $this->getMockBuilder(curl::class)
-            ->setMethods(['post'])
+            ->onlyMethods(['post'])
             ->getMock();
 
         $mock_curl->info = array('http_code' => $return_code);
