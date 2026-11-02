@@ -26,9 +26,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$observers = array(
-    array(
+$observers = [
+    [
         'eventname' => '\core\event\course_completed',
         'callback' => '\block_acclaim\group_observers::block_acclaim_create_pending_badge',
-    ),
-);
+    ],
+];

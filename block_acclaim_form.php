@@ -31,13 +31,13 @@ class block_acclaim_form extends moodleform {
     function definition() {
         $mform =& $this->_form;
 
-        //populate form
-        $mform->addElement('header','displayinfo', get_string('select_badge', 'block_acclaim'));
+        // populate form
+        $mform->addElement('header', 'displayinfo', get_string('select_badge', 'block_acclaim'));
         $badge_data = (new \block_acclaim_lib());
         $badge_items = $badge_data->badge_names();
         $badge_urls = $badge_data->badge_names('urls');
         $mform->addElement('select', 'badgeid', get_string('acclaim_badges', 'block_acclaim'), $badge_items, '');
-        $mform->addElement('date_time_selector', 'expiration', get_string('expires', 'block_acclaim'), array('optional' => true));
+        $mform->addElement('date_time_selector', 'expiration', get_string('expires', 'block_acclaim'), ['optional' => true]);
         $mform->setAdvanced('optional');
 
         // hidden elements
@@ -48,13 +48,13 @@ class block_acclaim_form extends moodleform {
             $mform->addElement('text', 'blockid');
             $mform->addElement('static', 'label2', 'hidden field courseid');
             $mform->addElement('text', 'courseid');
-            $mform->addElement('static','label3', 'hidden field badge name and url');
-            $mform->addElement('textarea', 'badgenamedisplay',$badges_encoded);
+            $mform->addElement('static', 'label3', 'hidden field badge name and url');
+            $mform->addElement('textarea', 'badgenamedisplay', $badges_encoded);
         } else {
             $mform->addElement('hidden', 'blockid');
             $mform->addElement('hidden', 'courseid');
         }
-        $mform->addElement('hidden','badgename', $badges_encoded);
+        $mform->addElement('hidden', 'badgename', $badges_encoded);
         $mform->setType('blockid', PARAM_INT);
         $mform->setType('courseid', PARAM_INT);
         $mform->setType('badgename', PARAM_RAW);

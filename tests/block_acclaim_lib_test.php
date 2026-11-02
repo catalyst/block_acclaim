@@ -28,10 +28,11 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/blocks/acclaim/lib.php');
 
-class block_acclaim_lib_test extends advanced_testcase {
+final class block_acclaim_lib_test extends advanced_testcase {
     private $acclaim = null;
 
     function setUp(): void {
+        parent::setUp();
         $this->resetAfterTest(true);
 
         $this->acclaim = new block_acclaim_lib();
@@ -46,47 +47,47 @@ class block_acclaim_lib_test extends advanced_testcase {
     // Tests
     ////////////////////
 
-    public function test_accumulate_badge_names() {
+    public function test_accumulate_badge_names(): void {
         $this->acclaim = new block_acclaim_lib();
-        $badge_items = array();
-        $badge_urls = array();
+        $badge_items = [];
+        $badge_urls = [];
         $json = json_encode(
-            array(
-                'data' => array(
-                    array(
+            [
+                'data' => [
+                    [
                         'id' => 1,
                         'name' => 'johnny',
                         'url' => 'https://example.com',
-                    )
-                )
-            )
+                    ],
+                ],
+            ]
         );
-        $this->invokePrivate('accumulate_badge_names', array($json, &$badge_items, &$badge_urls));
-        $this->assertEquals(array(1 => 'johnny'), $badge_items);
+        $this->invokePrivate('accumulate_badge_names', [$json, &$badge_items, &$badge_urls]);
+        $this->assertEquals([1 => 'johnny'], $badge_items);
         $json = json_encode(
-            array(
-                'data' => array(
-                    array(
+            [
+                'data' => [
+                    [
                         'id' => 2,
                         'name' => 'billy',
                         'url' => 'https://example.com',
-                    )
-                )
-            )
+                    ],
+                ],
+            ]
         );
-        $this->invokePrivate('accumulate_badge_names', array($json, &$badge_items, &$badge_urls));
-        $this->assertEquals(array(1 => 'johnny', 2 => 'billy'), $badge_items);
+        $this->invokePrivate('accumulate_badge_names', [$json, &$badge_items, &$badge_urls]);
+        $this->assertEquals([1 => 'johnny', 2 => 'billy'], $badge_items);
     }
 
-    public function test_badge_names() {
+    public function test_badge_names(): void {
         // phpunit doesn't allow mocking private methods, so use an overrides class instead of mocks.
         $this->acclaim = new block_acclaim_lib_badge_names_test();
 
         $badge_items = $this->acclaim->badge_names();
-        $this->assertEquals(array('two' => 'Second', 'three' => 'Third'), $badge_items);
+        $this->assertEquals(['two' => 'Second', 'three' => 'Third'], $badge_items);
     }
 
-    public function test_create_pending_badge() {
+    public function test_create_pending_badge(): void {
         global $DB;
         $this->acclaim = new block_acclaim_lib();
 
@@ -103,7 +104,7 @@ class block_acclaim_lib_test extends advanced_testcase {
         $pending_badges = $DB->get_records_list(
             'block_acclaim_pending_badges',
             'badgetemplateid',
-            array('1edb816d-a9fb-445d-b024-bb52075718e5')
+            ['1edb816d-a9fb-445d-b024-bb52075718e5']
         );
         $pending_badge = array_pop($pending_badges);
 
@@ -113,7 +114,7 @@ class block_acclaim_lib_test extends advanced_testcase {
         $this->assertEquals(0, $pending_badge->expiration);
     }
 
-    public function test_set_course_badge_template_is_unique() {
+    public function test_set_course_badge_template_is_unique(): void {
         global $DB;
 
         $result = $this->acclaim->set_course_badge_template($this->mock_form());
@@ -125,7 +126,7 @@ class block_acclaim_lib_test extends advanced_testcase {
         $this->assertEquals(1, $count);
     }
 
-    public function test_get_course_info() {
+    public function test_get_course_info(): void {
         global $DB;
         $table = 'block_acclaim_courses';
         $DB->delete_records($table);
@@ -138,13 +139,13 @@ class block_acclaim_lib_test extends advanced_testcase {
         $dataobject->courseid = $event->courseid;
         $dataobject->expiration = 0;
         $dataobject->badgename = 'test';
-        $DB->insert_record($table, $dataobject, $returnid=true, $bulk=false);
+        $DB->insert_record($table, $dataobject, $returnid = true, $bulk = false);
 
         $badge_id = $this->acclaim->get_course_info($event->courseid, 'badgeid');
-        $this->assertEquals($dataobject->badgeid,$badge_id);
+        $this->assertEquals($dataobject->badgeid, $badge_id);
     }
 
-    public function test_issue_pending_badges_success() {
+    public function test_issue_pending_badges_success(): void {
         global $DB;
         $url = 'url/organizations/123/badges';
 
@@ -158,7 +159,7 @@ class block_acclaim_lib_test extends advanced_testcase {
         $this->assert_pending_badge_count(0);
     }
 
-    public function test_issue_pending_badges_success_with_expiration() {
+    public function test_issue_pending_badges_success_with_expiration(): void {
         global $DB;
         $time = time();
         $url = 'url/organizations/123/badges';
@@ -173,7 +174,7 @@ class block_acclaim_lib_test extends advanced_testcase {
         $this->assert_pending_badge_count(0);
     }
 
-    public function test_issue_pending_badges_unprocessable_entity() {
+    public function test_issue_pending_badges_unprocessable_entity(): void {
         global $DB;
         $url = 'url/organizations/123/badges';
 
@@ -188,7 +189,7 @@ class block_acclaim_lib_test extends advanced_testcase {
         $this->assert_pending_badge_count(0);
     }
 
-    public function test_issue_pending_badges_failure() {
+    public function test_issue_pending_badges_failure(): void {
         global $DB;
         $url = 'url/organizations/123/badges';
 
@@ -203,7 +204,7 @@ class block_acclaim_lib_test extends advanced_testcase {
         $this->assert_pending_badge_count(1);
     }
 
-    public function test_issue_pending_badges_mutltiple() {
+    public function test_issue_pending_badges_mutltiple(): void {
         global $DB;
         $url = 'url/organizations/123/badges';
 
@@ -313,7 +314,7 @@ class block_acclaim_lib_test extends advanced_testcase {
             'issued_to_first_name' => 'Richard',
             'issued_to_last_name' => 'Kimble',
             'recipient_email' => 'richard.kimble@fugative.me',
-            'issued_at' => $this->convert_time_stamp(time())
+            'issued_at' => $this->convert_time_stamp(time()),
         ];
 
         if ($expires_at != 0) {
@@ -325,13 +326,13 @@ class block_acclaim_lib_test extends advanced_testcase {
             ->onlyMethods(['post'])
             ->getMock();
 
-        $mock_curl->info = array('http_code' => $return_code);
-        $mock_curl->expects($this->exactly( $times ))
+        $mock_curl->info = ['http_code' => $return_code];
+        $mock_curl->expects($this->exactly($times))
             ->method('post')
             ->with(
                 $url,
                 $expected_payload,
-                array('CURLOPT_USERPWD' => block_acclaim_lib::$config->token . ':')
+                ['CURLOPT_USERPWD' => block_acclaim_lib::$config->token . ':']
             );
         return $mock_curl;
     }
@@ -365,7 +366,7 @@ class block_acclaim_lib_test extends advanced_testcase {
      * @param array $parameters - Array of parameters to pass into the method.
      * @return mixed Method return.
      */
-    private function invokePrivate($methodName, array $parameters = array()) {
+    private function invokePrivate($methodName, array $parameters = []) {
         $reflection = new \ReflectionClass(block_acclaim_lib::class);
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
@@ -375,30 +376,30 @@ class block_acclaim_lib_test extends advanced_testcase {
 
 // Class to override protected methods for a specific test (since phpunit doesn't allow stubbing of those methods).
 // This class tests that badge_names() accumulates badges over multiple pages.
-class block_acclaim_lib_badge_names_test extends block_acclaim_lib {
+final class block_acclaim_lib_badge_names_test extends block_acclaim_lib {
     protected function query_api($url) {
         if ($url == 'p2&sort=name&filter=state::active') {
-            $result = array(
-                'data' => array(
-                    array(
+            $result = [
+                'data' => [
+                    [
                         'name' => 'Third',
                         'id' => 'three',
-                        'url' => 'https://example.com/def/badge/third'
-                    )
-                ),
-                'metadata' => array('next_page_url' => null),
-            );
+                        'url' => 'https://example.com/def/badge/third',
+                    ],
+                ],
+                'metadata' => ['next_page_url' => null],
+            ];
         } else {
-            $result = array(
-                'data' => array(
-                    array(
+            $result = [
+                'data' => [
+                    [
                         'name' => 'Second',
                         'id' => 'two',
-                        'url' => 'https://example.com/def/badge/second'
-                    )
-                ),
-                'metadata' => array('next_page_url' => 'p2'),
-            );
+                        'url' => 'https://example.com/def/badge/second',
+                    ],
+                ],
+                'metadata' => ['next_page_url' => 'p2'],
+            ];
         }
 
         return json_encode($result);

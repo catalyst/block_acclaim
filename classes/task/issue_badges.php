@@ -45,8 +45,8 @@ class issue_badges extends \core\task\scheduled_task {
      */
     public function execute() {
         global $CFG;
-        require_once($CFG->libdir. '/filelib.php');
+        require_once($CFG->libdir . '/filelib.php');
         require_once($CFG->dirroot . '/blocks/acclaim/lib.php');
-        (new \block_acclaim_lib())->issue_pending_badges(new \curl);
+        (new \block_acclaim_lib())->issue_pending_badges(new \curl());
     }
 }

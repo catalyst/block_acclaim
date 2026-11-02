@@ -39,8 +39,15 @@ class backup_acclaim_block_task extends backup_block_task {
     }
 
     // No-op overrides not used by this plugin.
-    protected function define_my_settings() {}
-    public function get_fileareas() {return [];}
-    public function get_configdata_encoded_attributes() {return [];}
-    static public function encode_content_links($content) {return $content;}
+    protected function define_my_settings() {
+    }
+    public function get_fileareas() {
+        return [];
+    }
+    public function get_configdata_encoded_attributes() {
+        return [];
+    }
+    public static function encode_content_links($content) {
+        return $content;
+    }
 }

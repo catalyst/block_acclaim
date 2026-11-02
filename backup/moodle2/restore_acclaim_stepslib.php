@@ -31,7 +31,7 @@ class restore_acclaim_block_structure_step extends restore_structure_step {
      *
      * @return restore_path_element[]
      */
-     protected function define_structure() {
+    protected function define_structure() {
         // 'course' here causes the restore process to call process_course().
         return [new restore_path_element('course', '/block/acclaim_course')];
     }

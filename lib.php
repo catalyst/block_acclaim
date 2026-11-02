@@ -48,13 +48,13 @@ class block_acclaim_lib {
      */
     public function create_pending_badge($course_id, $user_id) {
         global $DB;
-        $course = $DB->get_record('block_acclaim_courses', array('courseid' => $course_id), '*');
+        $course = $DB->get_record('block_acclaim_courses', ['courseid' => $course_id], '*');
         if (!$course) {
             // This method can be called outside of Acclaim context (for example, by unit tests)
             // with a non-Acclaim course.
             return;
         }
-        $user = $DB->get_record('user', array('id' => $user_id), '*', MUST_EXIST);
+        $user = $DB->get_record('user', ['id' => $user_id], '*', MUST_EXIST);
 
         $pending_badge = new stdClass();
         $pending_badge->userid = $user->id;
@@ -91,13 +91,12 @@ class block_acclaim_lib {
                 print "Acclaim block: Issuing badge {$badge->badgetemplateid} to {$badge->recipientemail}.\n";
             }
 
-
             $payload = [
                 'badge_template_id' => $badge->badgetemplateid,
                 'issued_to_first_name' => $badge->firstname,
                 'issued_to_last_name' => $badge->lastname,
                 'recipient_email' => $badge->recipientemail,
-                'issued_at' => $datetime
+                'issued_at' => $datetime,
             ];
 
             if ($badge->expiration) {
@@ -105,16 +104,18 @@ class block_acclaim_lib {
             }
 
             $curl->post(
-                $url, $payload, array('CURLOPT_USERPWD' => block_acclaim_lib::$config->token . ':')
+                $url,
+                $payload,
+                ['CURLOPT_USERPWD' => self::$config->token . ':']
             );
 
             if ($curl->info['http_code'] == 201) {
                 // The badge has been issued so we remove it from pending.
-                $DB->delete_records('block_acclaim_pending_badges',  array('id' => $badge->id));
+                $DB->delete_records('block_acclaim_pending_badges', ['id' => $badge->id]);
                 if (self::$allow_print) {
                     print "Acclaim block: Success.\n";
                 }
-            } elseif ($curl->info['http_code'] == 422) {
+            } else if ($curl->info['http_code'] == 422) {
                 // Acclaim can not issue the badge so we remove this from pending
                 // so it will not try again.  This could happen for example if the
                 // user already has been issued a badge.
@@ -123,7 +124,7 @@ class block_acclaim_lib {
                     error_log('block_acclaim:');
                     error_log(print_r($curl->response, true));
                 }
-                $DB->delete_records('block_acclaim_pending_badges', array('id' => $badge->id));
+                $DB->delete_records('block_acclaim_pending_badges', ['id' => $badge->id]);
             } else {
                 // some other issue is preventing the badge from being issued
                 // for example site down or token incorrectly entered.  The
@@ -148,7 +149,7 @@ class block_acclaim_lib {
      */
     function get_course_info($course_id, $field) {
         global $DB;
-        $course = $DB->get_record('block_acclaim_courses', array('courseid' => $course_id));
+        $course = $DB->get_record('block_acclaim_courses', ['courseid' => $course_id]);
         return empty($course) ? '' : $course->$field;
     }
 
@@ -164,7 +165,7 @@ class block_acclaim_lib {
         $badge_data = json_decode($fromform->badgename, true);
         $badge_name = $badge_data[$fromform->badgeid];
 
-        $urlId = $fromform->badgeid.'_url';
+        $urlId = $fromform->badgeid . '_url';
         $badge_url = $badge_data[$urlId];
 
         if (isset($badge_name)) {
@@ -174,10 +175,10 @@ class block_acclaim_lib {
         if (isset($badge_url)) {
             $fromform->badgeurl = $badge_url;
         } else {
-          $fromform->badgeurl = "Badge URL Isn't Set";
+            $fromform->badgeurl = "Badge URL Isn't Set";
         }
 
-        $DB->delete_records('block_acclaim_courses',  array('courseid' => $fromform->courseid));
+        $DB->delete_records('block_acclaim_courses', ['courseid' => $fromform->courseid]);
 
         return $DB->insert_record('block_acclaim_courses', $fromform);
     }
@@ -188,8 +189,8 @@ class block_acclaim_lib {
      * @return array
      */
     function badge_names($returntype = '') {
-        $badge_items = array();
-        $badge_urls = array();
+        $badge_items = [];
+        $badge_urls = [];
 
         $json = $this->query_api(null);
         $this->accumulate_badge_names($json, $badge_items, $badge_urls);
@@ -212,7 +213,7 @@ class block_acclaim_lib {
             }
         }
         if ($returntype == 'urls') {
-          return $badge_urls;
+            return $badge_urls;
         }
         return $badge_items;
     }
@@ -230,7 +231,7 @@ class block_acclaim_lib {
             $url = "{$config->url}/organizations/{$config->org}/badge_templates/{$id}";
         }
 
-        $options = array('CURLOPT_USERPWD' => self::$config->token . ':');
+        $options = ['CURLOPT_USERPWD' => self::$config->token . ':'];
         $result = (new curl())->get($url, $params, $options);
         $arr = json_decode($result, true);
 
@@ -254,8 +255,8 @@ class block_acclaim_lib {
      * @return object
      */
     private function fetch_badge_json($curl, $url, $token) {
-        $params = array('sort' => 'name', 'filter' => 'state::active');
-        $options = array('CURLOPT_USERPWD' => $token . ':');
+        $params = ['sort' => 'name', 'filter' => 'state::active'];
+        $options = ['CURLOPT_USERPWD' => $token . ':'];
         return $curl->get($url, $params, $options);
     }
 
@@ -271,7 +272,7 @@ class block_acclaim_lib {
             foreach ($arr['data'] as $item) {
                 $len = strlen($item['name']);
                 $badge_items[$item['id']] = $len > 75 ? substr($item['name'], 0, 75 - $len) . '...' : $item['name'];
-                $badge_urls[$item['id'].'_url'] = $item['url'];
+                $badge_urls[$item['id'] . '_url'] = $item['url'];
             }
         } else {
             error_log('invalid api, token or unable to connect');
@@ -291,8 +292,8 @@ class block_acclaim_lib {
             $url = "{$config->url}/organizations/{$config->org}/badge_templates?sort=name&filter=state::active";
         }
 
-        $params = array('sort' => 'name', 'filter' => 'state::active');
-        $options = array('CURLOPT_USERPWD' => self::$config->token . ':');
+        $params = ['sort' => 'name', 'filter' => 'state::active'];
+        $options = ['CURLOPT_USERPWD' => self::$config->token . ':'];
         $result = (new curl())->get($url, $params, $options);
         return $result;
     }

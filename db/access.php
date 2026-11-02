@@ -21,39 +21,39 @@
  * @copyright  2020 Credly, Inc. <http://youracclaim.com>
  * @license    https://opensource.org/licenses/MIT
  */
-$capabilities = array(
+$capabilities = [
     // Can edit objectives
-    'block/acclaim:editbadge' => array(
+    'block/acclaim:editbadge' => [
         'captype' => 'write',
         'riskbitmask' => RISK_SPAM,
         'contextlevel' => CONTEXT_COURSE,
-        'legacy' => array(
+        'legacy' => [
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-        
-    'block/acclaim:myaddinstance' => array(
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+
+    'block/acclaim:myaddinstance' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'user' => CAP_ALLOW
-        ),
-                                                      
-        'clonepermissionsfrom' => 'moodle/my:manageblocks'
-    ),
+        'archetypes' => [
+            'user' => CAP_ALLOW,
+        ],
 
-    'block/acclaim:addinstance' => array(
+        'clonepermissionsfrom' => 'moodle/my:manageblocks',
+    ],
+
+    'block/acclaim:addinstance' => [
         'riskbitmask' => RISK_SPAM | RISK_XSS,
-                                                                                
+
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ),
-                                                                                                                                 
-        'clonepermissionsfrom' => 'moodle/site:manageblocks'
-    ),
-);
+            'manager' => CAP_ALLOW,
+        ],
+
+        'clonepermissionsfrom' => 'moodle/site:manageblocks',
+    ],
+];

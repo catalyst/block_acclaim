@@ -39,9 +39,18 @@ class restore_acclaim_block_task extends restore_block_task {
     }
 
     // No-op overrides not used by this plugin.
-    protected function define_my_settings() {}
-    public function get_fileareas() {return [];}
-    public function get_configdata_encoded_attributes() {return [];}
-    static public function define_decode_contents() {return [];}
-    static public function define_decode_rules() {return [];}
+    protected function define_my_settings() {
+    }
+    public function get_fileareas() {
+        return [];
+    }
+    public function get_configdata_encoded_attributes() {
+        return [];
+    }
+    public static function define_decode_contents() {
+        return [];
+    }
+    public static function define_decode_rules() {
+        return [];
+    }
 }

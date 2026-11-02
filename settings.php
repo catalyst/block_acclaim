@@ -24,10 +24,10 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-    $urls = array(
+    $urls = [
         'https://api.credly.com/v1' => get_string('production', 'block_acclaim'),
-        'https://sandbox-api.credly.com/v1' => get_string('sandbox', 'block_acclaim')
-    );
+        'https://sandbox-api.credly.com/v1' => get_string('sandbox', 'block_acclaim'),
+    ];
 
     $settings->add(
         new admin_setting_configselect(

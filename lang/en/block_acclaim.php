@@ -24,26 +24,26 @@
 
 // Re-reading this file requires a version change.
 // In development, set this in config.php instead: $CFG->langstringcache = false;
-$string['pluginname'] = 'Credly';
 $string['acclaim'] = 'Credly';
+$string['acclaim:addinstance'] = 'Add a new Credly block';
+$string['acclaim:editbadge'] = 'Select a badge to associate with a course';
+$string['acclaim:myaddinstance'] = 'Add a new Credly block to the My Moodle page';
+$string['acclaim_badges'] = 'Credly Badges';
 $string['config_header'] = 'Create a new Credly block for this course';
 $string['config_instructions'] = 'This block will issue an Credly badge on course completion. The badge may be selected from the course page.';
-$string['acclaim:addinstance'] = 'Add a new Credly block';
-$string['acclaim:myaddinstance'] = 'Add a new Credly block to the My Moodle page';
-$string['acclaim:editbadge'] = 'Select a badge to associate with a course';
+$string['expires'] = 'Expires';
+$string['pluginname'] = 'Credly';
 $string['privacy:metadata'] = 'The Credly block only stores course and badge template details. User data is stored in a temporary table and removed once issued';
+$string['privacy:metadata:credly'] = 'Recipient details are sent to Credly to issue a badge on course completion.';
+$string['privacy:metadata:credly:email'] = 'The email address of the badge recipient.';
+$string['privacy:metadata:credly:firstname'] = 'The first name of the badge recipient.';
+$string['privacy:metadata:credly:lastname'] = 'The last name of the badge recipient.';
 $string['privacy:metadata:pending_badges'] = 'Badges awaiting issue to Credly after course completion. Rows are removed once issued.';
-$string['privacy:metadata:pending_badges:userid'] = 'The ID of the badge recipient.';
 $string['privacy:metadata:pending_badges:firstname'] = 'The first name of the badge recipient.';
 $string['privacy:metadata:pending_badges:lastname'] = 'The last name of the badge recipient.';
 $string['privacy:metadata:pending_badges:recipientemail'] = 'The email address of the badge recipient.';
-$string['privacy:metadata:credly'] = 'Recipient details are sent to Credly to issue a badge on course completion.';
-$string['privacy:metadata:credly:firstname'] = 'The first name of the badge recipient.';
-$string['privacy:metadata:credly:lastname'] = 'The last name of the badge recipient.';
-$string['privacy:metadata:credly:email'] = 'The email address of the badge recipient.';
+$string['privacy:metadata:pending_badges:userid'] = 'The ID of the badge recipient.';
 $string['select_badge'] = 'Select Badge';
-$string['acclaim_badges'] = 'Credly Badges';
-$string['expires'] = 'Expires';
 $string['production'] = 'Production'; // The name of the Acclaim production server.
 $string['sandbox'] = 'Sandbox'; // The name of the Acclaim demo server.
 $string['setting_domain'] = 'Credly Server';

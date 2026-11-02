@@ -44,7 +44,7 @@ class block_acclaim_create_pending_badge extends \core\event\base {
     public static function get_name() {
         return get_string('eventbadgeissued', 'acclaim');
     }
- 
+
     /**
      * Get the description of a badge issue event.
      *
@@ -60,6 +60,6 @@ class block_acclaim_create_pending_badge extends \core\event\base {
      * @return string
      */
     public function get_url() {
-        return new \moodle_url('/block/acclaim', array('parameter' => 'id', $this->objectid));
+        return new \moodle_url('/block/acclaim', ['parameter' => 'id', $this->objectid]);
     }
 }

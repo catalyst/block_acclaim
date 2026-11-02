@@ -53,7 +53,7 @@ class block_acclaim extends block_base {
      * Display specialized text for the course block (the selected badge name).
      */
     public function specialization() {
-        if(!isset($this->config)){
+        if (!isset($this->config)) {
             $this->config = new stdClass();
         }
         global $COURSE;
@@ -88,13 +88,13 @@ class block_acclaim extends block_base {
      * @return string
      */
     public function applicable_formats() {
-        return array(
+        return [
             'site-index' => false,
             'course-view' => true,
             'course-view-social' => false,
             'mod' => false,
-            'mod-quiz' => false
-        );
+            'mod-quiz' => false,
+        ];
     }
 
     /**
@@ -112,17 +112,17 @@ class block_acclaim extends block_base {
 
         $badge_name = $this->acclaim->get_course_info($COURSE->id, 'badgename');
 
-        $this->content = new stdClass;
+        $this->content = new stdClass();
         if (!empty($this->config->text) && $this->config->text != "No Badge Selected") {
             $this->content->text = html_writer::link($this->config->text2, $this->config->text);
-        } elseif (!empty($this->config->text)) {
-          $this->content->text = $this->config->text;
+        } else if (!empty($this->config->text)) {
+            $this->content->text = $this->config->text;
         }
 
         /* Debugging */
         // Output goes to block screen on course homes.
         if (block_acclaim_lib::$allow_debug) {
-            $course = $DB->get_record('block_acclaim_courses', array('courseid' => $COURSE->id));
+            $course = $DB->get_record('block_acclaim_courses', ['courseid' => $COURSE->id]);
             $pending_badges = $DB->get_records('block_acclaim_pending_badges');
             $badge_count = count($pending_badges);
 
@@ -151,10 +151,9 @@ class block_acclaim extends block_base {
             }
         }
 
-
         $url = new moodle_url(
             '/blocks/acclaim/view.php',
-            array('blockid' => $this->instance->id, 'courseid' => $COURSE->id)
+            ['blockid' => $this->instance->id, 'courseid' => $COURSE->id]
         );
 
         $context = context_course::instance($COURSE->id);
@@ -170,6 +169,6 @@ class block_acclaim extends block_base {
     function instance_delete() {
         global $DB;
         global $COURSE;
-        $DB->delete_records('block_acclaim_courses', array('courseid' => $COURSE->id));
+        $DB->delete_records('block_acclaim_courses', ['courseid' => $COURSE->id]);
     }
 }

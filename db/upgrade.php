@@ -27,7 +27,6 @@ function xmldb_block_acclaim_upgrade($oldversion) {
     $dbman = $DB->get_manager();
     /// Add a new column newcol to the mdl_myqtype_options
     if ($oldversion < 2020042200) {
-
         // Define table block_acclaim_pending_badges to be created.
         $table = new xmldb_table('block_acclaim_pending_badges');
 
@@ -40,7 +39,7 @@ function xmldb_block_acclaim_upgrade($oldversion) {
         $table->add_field('expiration', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
 
         // Adding keys to table block_acclaim_pending_badges.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
 
         // Conditionally launch create table for block_acclaim_pending_badges.
         if (!$dbman->table_exists($table)) {
@@ -67,7 +66,7 @@ function xmldb_block_acclaim_upgrade($oldversion) {
             $dbman->add_field($table, $field);
 
             // Update all records to have a badge url, defaulting to the value set in lib.php:set_course_badge_template().
-            $DB->execute('UPDATE {block_acclaim_courses} SET badgeurl = ?', array("Badge URL Isn't Set"));
+            $DB->execute('UPDATE {block_acclaim_courses} SET badgeurl = ?', ["Badge URL Isn't Set"]);
 
             // Change the field to not nullable.
             $field->setNotNull(true);
